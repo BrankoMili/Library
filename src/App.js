@@ -1,13 +1,15 @@
 import "./App.css";
 import instance from "./utils/api";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Collection from "./views/Collection";
+import Collections from "./views/Collections";
 import Home from "./views/Home";
 import PageNotFound from "./views/PageNotFound";
 import ContactUs from "./views/ContactUs";
 import TermsOfService from "./views/TermsOfService";
 import Navbar from "./navbar/Navbar";
 import Footer from "./footer/Footer";
+import Kids from "./views/Kids";
+import Teens from "./views/Teens";
 
 function App() {
   // const getBooks = () => {
@@ -27,13 +29,17 @@ function App() {
     <div className="App">
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/termsofservice" element={<TermsOfService />} />
-          <Route path="*" element={<PageNotFound />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
+        <div className="main">
+          <Routes>
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/contactus" element={<ContactUs />} />
+            <Route path="/termsofservice" element={<TermsOfService />} />
+            <Route path="/kids" element={<Kids />} />
+            <Route path="/teens" element={<Teens />} />
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
         <Footer />
       </Router>
     </div>

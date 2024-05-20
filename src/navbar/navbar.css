@@ -1,0 +1,24 @@
+.navbar_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-color);
+}
+
+.navbar_buttons {
+  display: flex;
+}
+
+.navbar_buttons a {
+  margin-left: 1rem;
+  color: white;
+}
+
+.navbar_buttons a:hover {
+  color: rgb(231, 236, 240);
+}
+
+.logo_container .logo {
+  width: 5rem;
+  margin-right: 5rem;
+}

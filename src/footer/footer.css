@@ -1,0 +1,22 @@
+.footer_container {
+  margin-top: 1.2rem;
+  background-color: var(--main-color);
+  text-align: center;
+  color: white;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.footer_container p {
+  margin: 0;
+  margin-bottom: 7px;
+}
+
+.footer_container a {
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.footer_container a:hover {
+  color: rgb(231, 236, 240);
+}
