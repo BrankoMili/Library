@@ -1,3 +1,8 @@
+p,
+a {
+  margin: 0;
+}
+
 .navbar_container {
   display: flex;
   align-items: center;
@@ -10,15 +15,74 @@
 }
 
 .navbar_buttons a {
-  margin-left: 1rem;
+  margin-left: 1.5rem;
   color: white;
 }
 
 .navbar_buttons a:hover {
   color: rgb(231, 236, 240);
+  cursor: pointer;
 }
 
 .logo_container .logo {
   width: 5rem;
   margin-right: 5rem;
+}
+
+.collections_menu_container {
+  position: relative;
+  color: white;
+}
+
+.collections_menu_container .collections_button,
+.collections_menu_container .arrow_down {
+  color: white;
+}
+
+.arrow_down {
+  border: solid rgb(255, 255, 255);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  margin-left: 9px;
+  margin-bottom: 2px;
+}
+
+.collections_menu_container:hover .collections_button {
+  color: rgb(231, 236, 240);
+  cursor: pointer;
+}
+
+.collections_menu_container:hover .arrow_down {
+  border-color: rgb(231, 236, 240);
+  cursor: pointer;
+}
+
+.collections_menu {
+  position: absolute;
+  top: 30px;
+  width: 20rem;
+  height: 8rem;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid black;
+}
+
+.collections_menu p {
+  color: black;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.collections_menu a {
+  color: black;
+  display: block;
+  margin-left: 20px;
+  width: fit-content;
+}
+
+.collections_menu a:hover {
+  color: rgb(105, 105, 105);
 }

@@ -7,3 +7,12 @@
 .main {
   flex-grow: 1;
 }
+
+/* HOME PAGE */
+.home_container {
+  text-align: center;
+}
+
+.laptop_photo {
+  width: 30rem;
+}
