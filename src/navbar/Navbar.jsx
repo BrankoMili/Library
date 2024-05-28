@@ -8,7 +8,16 @@ const Navbar = () => {
   const [collectionsWindow, setCollectionWindow] = useState(false);
 
   return (
-    <div className="navbar_container">
+    <div
+      className="navbar_container"
+      onClick={e => {
+        if (e.target.className === "collections_button") {
+          setCollectionWindow(!collectionsWindow);
+        } else {
+          setCollectionWindow(false);
+        }
+      }}
+    >
       <div className="logo_container">
         <Link to={"/"}>
           <Logo className="logo" />
@@ -16,12 +25,9 @@ const Navbar = () => {
       </div>
 
       <div className="navbar_buttons">
-        <div
-          className="collections_menu_container"
-          onClick={() => setCollectionWindow(!collectionsWindow)}
-        >
+        <div className="collections_menu_container">
           <span className="collections_button">Collections</span>
-          <i class="arrow_down"></i>
+          <i className="arrow_down"></i>
           {/* Collections menu */}
           {collectionsWindow && (
             <div className="collections_menu">

@@ -1,12 +1,14 @@
+import { useNavigate, useParams } from "react-router-dom";
 import instance from "../utils/api";
 import { useEffect, useContext } from "react";
 import { BooksContext } from "../context/BooksContext";
 import Error from "../error/Error";
-import ProductsList from "../products/ProductsList";
 
-const Kids = () => {
+const SingleProduct = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
   const { books, loading, error } = booksState;
+  const { productId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setBooksState(prevState => {
@@ -14,12 +16,12 @@ const Kids = () => {
     });
 
     instance
-      .get("/book")
+      .get(`/book/${productId}`)
       .then(res => {
         setBooksState(prevState => {
           return {
             ...prevState,
-            books: res.data,
+            books: [res.data],
             loading: false,
             error: null
           };
@@ -37,9 +39,17 @@ const Kids = () => {
   if (error) return <Error error={error} />;
   return (
     <div>
-      <ProductsList products={books} />
+      SingleProduct
+      <button
+        className="button_style"
+        onClick={() => {
+          navigate("/kids");
+        }}
+      >
+        Back To All Products
+      </button>
     </div>
   );
 };
 
-export default Kids;
+export default SingleProduct;

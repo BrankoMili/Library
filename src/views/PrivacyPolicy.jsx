@@ -1,7 +1,7 @@
-const TermsOfService = () => {
+const PrivacyPolicy = () => {
   return (
-    <div className="termsofservice_container">
-      <h2>Terms Of Service</h2>
+    <div className="privacypolicy_container">
+      <h2>Privacy Policy</h2>
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Atque, animi
         accusantium? Quibusdam nesciunt magnam ut error rerum corporis eum ipsum
@@ -19,4 +19,4 @@ const TermsOfService = () => {
   );
 };
 
-export default TermsOfService;
+export default PrivacyPolicy;

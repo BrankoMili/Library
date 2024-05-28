@@ -8,6 +8,23 @@
   flex-grow: 1;
 }
 
+.button_style {
+  display: block;
+  margin: 0 auto;
+  margin-top: 1rem;
+  border: none;
+  padding: 0.6rem;
+  background-color: var(--main-color);
+  color: white;
+  font-weight: 600;
+  border-radius: 17px;
+}
+
+.button_style:hover {
+  cursor: pointer;
+  opacity: 0.85;
+}
+
 /* HOME PAGE */
 .home_container {
   text-align: center;
@@ -15,4 +32,127 @@
 
 .laptop_photo {
   width: 30rem;
+}
+
+/* CONTACT US */
+.contactus_container {
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f4f8fa;
+  border: 1px solid #d0e0e9;
+  border-radius: 20px;
+}
+
+.contactus_container h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.contactus_container form {
+  margin: 0 auto;
+}
+
+.contactus_container .contact_details i {
+  margin-right: 1rem;
+  font-size: 1.3rem;
+}
+
+.contactus_container .form_container {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.contactus_container .form_container input {
+  display: block;
+  width: 15rem;
+  margin: 0.3rem 0;
+  height: 1.3rem;
+  border-radius: 7px;
+  border: 1px solid rgb(155, 155, 155);
+}
+
+.contactus_container .form_container textarea {
+  width: 25rem;
+  min-height: 8rem;
+  max-width: 25rem;
+  max-height: 17rem;
+  min-width: 18rem;
+  border-radius: 7px;
+  border: 1px solid rgb(155, 155, 155);
+}
+
+/* TERMS OF SERVICE */
+.termsofservice_container {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.termsofservice_container h2 {
+  text-align: center;
+}
+
+/* PRIVACY POLICY */
+.privacypolicy_container {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.privacypolicy_container h2 {
+  text-align: center;
+}
+
+/* LOADING */
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  aspect-ratio: 1;
+  --c: linear-gradient(#b1b1b1 0 0);
+  --r1: radial-gradient(farthest-side at bottom, #b1b1b1 93%, #b1b1b1);
+  --r2: radial-gradient(farthest-side at top, #b1b1b1 93%, #b1b1b1);
+  background: var(--c), var(--r1), var(--r2), var(--c), var(--r1), var(--r2),
+    var(--c), var(--r1), var(--r2);
+  background-repeat: no-repeat;
+  animation: l2 0.8s infinite alternate;
+}
+@keyframes l2 {
+  0%,
+  25% {
+    background-size: 8px 0, 8px 4px, 8px 4px, 8px 0, 8px 4px, 8px 4px, 8px 0,
+      8px 4px, 8px 4px;
+    background-position: 0 50%, 0 calc(50% - 2px), 0 calc(50% + 2px), 50% 50%,
+      50% calc(50% - 2px), 50% calc(50% + 2px), 100% 50%, 100% calc(50% - 2px),
+      100% calc(50% + 2px);
+  }
+  50% {
+    background-size: 8px 100%, 8px 4px, 8px 4px, 8px 0, 8px 4px, 8px 4px, 8px 0,
+      8px 4px, 8px 4px;
+    background-position: 0 50%, 0 calc(0% - 2px), 0 calc(100% + 2px), 50% 50%,
+      50% calc(50% - 2px), 50% calc(50% + 2px), 100% 50%, 100% calc(50% - 2px),
+      100% calc(50% + 2px);
+  }
+  75% {
+    background-size: 8px 100%, 8px 4px, 8px 4px, 8px 100%, 8px 4px, 8px 4px,
+      8px 0, 8px 4px, 8px 4px;
+    background-position: 0 50%, 0 calc(0% - 2px), 0 calc(100% + 2px), 50% 50%,
+      50% calc(0% - 2px), 50% calc(100% + 2px), 100% 50%, 100% calc(50% - 2px),
+      100% calc(50% + 2px);
+  }
+  95%,
+  100% {
+    background-size: 8px 100%, 8px 4px, 8px 4px, 8px 100%, 8px 4px, 8px 4px,
+      8px 100%, 8px 4px, 8px 4px;
+    background-position: 0 50%, 0 calc(0% - 2px), 0 calc(100% + 2px), 50% 50%,
+      50% calc(0% - 2px), 50% calc(100% + 2px), 100% 50%, 100% calc(0% - 2px),
+      100% calc(100% + 2px);
+  }
 }
