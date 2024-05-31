@@ -1,7 +1,11 @@
-import React from "react";
+import "../products/products.css";
 
 const Teens = () => {
-  return <div>Teens</div>;
+  return (
+    <div>
+      <h2>Teens Collection</h2>
+    </div>
+  );
 };
 
 export default Teens;

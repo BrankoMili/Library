@@ -3,6 +3,7 @@ import { useEffect, useContext } from "react";
 import { BooksContext } from "../context/BooksContext";
 import Error from "../error/Error";
 import ProductsList from "../products/ProductsList";
+import "../products/products.css";
 
 const Kids = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
@@ -36,7 +37,8 @@ const Kids = () => {
   if (loading) return <div className="loader"></div>;
   if (error) return <Error error={error} />;
   return (
-    <div>
+    <div className="kids_container">
+      <h2>Kids Collection</h2>
       <ProductsList products={books} />
     </div>
   );

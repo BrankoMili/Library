@@ -1,0 +1,35 @@
+/* KIDS COLLECTION */
+.kids_container h2 {
+  text-align: center;
+}
+
+.products_list_container {
+  width: 70%;
+  /* background-color: red; */
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.single_book_container {
+  /* background-color: yellow; */
+  /* margin: 0 auto; */
+  width: fit-content;
+}
+
+.single_book_container p {
+  width: fit-content;
+  /* background-color: blue; */
+}
+
+.single_book_container p:hover {
+  cursor: pointer;
+}
+
+.single_book_photo {
+  width: 10rem;
+}
+
+.single_book_photo:hover {
+  cursor: pointer;
+}

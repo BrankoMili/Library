@@ -12,6 +12,7 @@ import Teens from "./views/Teens";
 import BooksContextProvider from "./context/BooksContext";
 import SingleProduct from "./products/SingleProduct";
 import PrivacyPolicy from "./views/PrivacyPolicy";
+import AddBook from "./views/AddBook";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/privacypolicy" element={<PrivacyPolicy />} />
               <Route path="/kids" element={<Kids />} />
               <Route path="/teens" element={<Teens />} />
+              <Route path="/addbook" element={<AddBook />} />
               <Route path="/books/:productId" element={<SingleProduct />} />
               <Route path="*" element={<PageNotFound />} />
               <Route path="/" element={<Home />} />
