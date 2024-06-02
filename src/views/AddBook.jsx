@@ -4,42 +4,80 @@ import instance from "../utils/api";
 const AddBook = () => {
   const [book, setBook] = useState({
     title: "",
-    desc: "",
+    description: "",
     author: "",
-    category: "ROMANCE",
-    releaseYear: 0,
-    selectedImage: null
+    category: "",
+    releaseYear: "",
+    publisher: "",
+    image: null,
+    pdf: null
   });
 
-  const [fileName, setFileName] = useState("");
-
-  const handleFileChange = event => {
+  // Handle Book image / update state
+  const handleBookImage = event => {
     setBook(prevState => {
-      return { ...prevState, selectedImage: event.target.files[0] };
+      return { ...prevState, image: event.target.files[0] };
     });
   };
 
-  function validateFileType() {
-    let idxDot = fileName.lastIndexOf(".") + 1;
-    let extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-    if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
-      return true;
+  // Handle PDF file / update state
+  const handlePDF = event => {
+    setBook(prevState => {
+      return { ...prevState, pdf: event.target.files[0] };
+    });
+    console.log(book);
+  };
+
+  // Validate Book cover image format
+  function validateImageFile() {
+    if (book.image !== null) {
+      let idxDot = book.image.name.lastIndexOf(".") + 1;
+      let extFile = book.image.name
+        .substr(idxDot, book.image.name.length)
+        .toLowerCase();
+      if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
+        return true;
+      } else {
+        alert("Only jpg/jpeg and png files are allowed!");
+        return false;
+      }
     } else {
-      alert("Only jpg/jpeg and png files are allowed!");
+      alert("Book cover image is not selected.");
+      return false;
+    }
+  }
+
+  // Validate Book PDF file
+  function validatePDFFile() {
+    if (book.pdf !== null) {
+      let idxDot = book.pdf.name.lastIndexOf(".") + 1;
+      let extFile = book.pdf.name
+        .substr(idxDot, book.pdf.name.length)
+        .toLowerCase();
+      if (extFile === "pdf") {
+        return true;
+      } else {
+        alert("Only pdf files are allowed!");
+        return false;
+      }
+    } else {
+      alert("PDF file is not selected.");
       return false;
     }
   }
 
   const handleSubmit = async event => {
     event.preventDefault();
-    if (validateFileType() && book.selectedImage) {
+    if (/*validateImageFile() && validatePDFFile()*/ true) {
       const formData = new FormData();
       formData.append("title", book.title);
-      formData.append("desc", book.desc);
+      formData.append("description", book.description);
       formData.append("author", book.author);
       formData.append("category", book.category);
-      formData.append("image", book.selectedImage);
       formData.append("releaseYear", book.releaseYear);
+      formData.append("publisher", book.publisher);
+      formData.append("image", book.image);
+      formData.append("pdf", book.pdf);
 
       instance
         .post("/book", formData, {
@@ -55,8 +93,6 @@ const AddBook = () => {
           console.error("Error uploading image:", error);
           // Handle upload errors
         });
-    } else {
-      // NIJE SLIKA
     }
   };
 
@@ -82,7 +118,7 @@ const AddBook = () => {
             id="book_desc"
             onChange={e => {
               setBook(prevState => {
-                return { ...prevState, desc: e.target.value };
+                return { ...prevState, description: e.target.value };
               });
             }}
           />
@@ -104,15 +140,19 @@ const AddBook = () => {
           <select
             onChange={e => {
               setBook(prevState => {
-                return { ...prevState, category: e.target.value };
+                console.log(prevState);
+                return {
+                  ...prevState,
+                  category: prevState.category + "," + e.target.value
+                };
               });
             }}
           >
-            <option value="ROMANCE" defaultChecked>
-              ROMANCE
+            <option value="Romance" defaultChecked>
+              Romance
             </option>
-            <option value="FANTASY">FANTASY</option>
-            <option value="SCIENCE">SCIENCE</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Literature">Literature</option>
           </select>
         </div>
         <div>
@@ -128,15 +168,36 @@ const AddBook = () => {
           />
         </div>
         <div>
-          <label htmlFor="book_cover_image">Book Cover Image</label>
+          <label htmlFor="publisher">Publisher</label>
+          <input
+            type="text"
+            id="publisher"
+            onChange={e => {
+              setBook(prevState => {
+                return { ...prevState, publisher: e.target.value };
+              });
+            }}
+          />
+        </div>
+        <div>
+          <label>Book Cover Image</label>
           <input
             type="file"
-            id="book_cover_image"
             accept=".png, .jpg, .jpeg"
-            value={fileName}
+            value=""
             onChange={e => {
-              setFileName(e.target.value);
-              handleFileChange(e);
+              handleBookImage(e);
+            }}
+          />
+        </div>
+        <div>
+          <label>Book PDF file</label>
+          <input
+            type="file"
+            accept=".pdf"
+            value=""
+            onChange={e => {
+              handlePDF(e);
             }}
           />
         </div>

@@ -3,11 +3,16 @@ a {
   margin: 0;
 }
 
+nav {
+  background-color: var(--main-color);
+}
+
 .navbar_container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: var(--main-color);
+  justify-content: space-between;
+  width: 70%;
+  margin: 0 auto;
 }
 
 .navbar_buttons {
@@ -22,11 +27,18 @@ a {
 .navbar_buttons a:hover {
   color: rgb(231, 236, 240);
   cursor: pointer;
+  transition: var(--transition);
 }
 
-.logo_container .logo {
+.logo_buttons_container {
+  display: flex;
+  align-items: center;
+}
+
+.logo_buttons_container .logo {
   width: 5rem;
-  margin-right: 5rem;
+  height: 5rem;
+  margin-right: 3rem;
 }
 
 .collections_menu_container {
@@ -85,4 +97,46 @@ a {
 
 .collections_menu a:hover {
   color: rgb(105, 105, 105);
+}
+
+.search_singin_container {
+  display: flex;
+  align-items: center;
+}
+
+.searchbox_container {
+  display: flex;
+  align-items: center;
+}
+
+.searchbox_container .search_box {
+  width: 12rem;
+  height: 25px;
+}
+
+.searchbox_container .search_icon {
+  width: 30px;
+  height: 30px;
+}
+
+.searchbox_container .search_icon:hover {
+  cursor: pointer;
+  fill: #e5f1f5;
+  transition: var(--transition);
+}
+
+.search_singin_container .signin_button {
+  color: white;
+}
+
+.search_singin_container a {
+  color: white;
+  padding: 3px;
+  background-color: var(--second-color);
+  margin-left: 15px;
+}
+
+.search_singin_container a:hover {
+  background-color: #be747c;
+  transition: var(--transition);
 }

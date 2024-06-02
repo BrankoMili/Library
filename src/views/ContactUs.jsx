@@ -3,11 +3,11 @@ const ContactUs = () => {
     <div className="contactus_container">
       <h2>Contact Us</h2>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde quisquam
-        ullam iste, voluptates eligendi nulla autem error magnam temporibus
-        commodi perspiciatis iure aut obcaecati nam quos quas numquam
-        reprehenderit est!
+        We're here to help you explore the vast world of knowledge available in
+        our digital library. Feel free to reach out if you have any questions,
+        comments, or suggestions.
       </p>
+      <b>Here are some ways to get in touch:</b>
       <div className="contact_details">
         <i className="uil uil-phone-times"></i>
         <span>+381655545656</span>

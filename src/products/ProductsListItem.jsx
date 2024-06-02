@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { baseURLAddress } from "../utils/api";
 
 const ProductsListItem = ({ product }) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const ProductsListItem = ({ product }) => {
       className="single_book_container"
     >
       <img
-        src={`http://localhost:8080/api/book/view/${product.coverPageImageName}`}
+        src={`${baseURLAddress}${product.coverPageImageName}`}
         alt="book example"
         className="single_book_photo"
       />
