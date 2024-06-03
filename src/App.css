@@ -10,7 +10,6 @@
 
 .button_style {
   display: block;
-  margin: 0 auto;
   margin-top: 1rem;
   border: none;
   padding: 0.6rem;
@@ -124,7 +123,6 @@
   box-shadow: var(--light-shadow);
   padding: 1.5rem;
   border: 1px solid rgb(230, 230, 230);
-  /* background-color: blue; */
   text-align: center;
 }
 
@@ -211,7 +209,6 @@
 .singin_container .createaccounttext:hover {
   cursor: pointer;
 }
-
 /* LOADING */
 
 /* HTML: <div class="loader"></div> */

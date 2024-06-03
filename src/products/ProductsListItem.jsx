@@ -11,13 +11,17 @@ const ProductsListItem = ({ product }) => {
       }}
       className="single_book_container"
     >
-      <img
-        src={`${baseURLAddress}${product.coverPageImageName}`}
-        alt="book example"
-        className="single_book_photo"
-      />
-      <p>{product.title}</p>
-      <p>{product.author}</p>
+      <div className="single_book">
+        <img
+          src={`${baseURLAddress}${product.coverPageImageName}`}
+          alt="book example"
+          className="single_book_photo"
+        />
+        <div>
+          <b>{product.title}</b>
+          <p>{product.author}</p>
+        </div>
+      </div>
     </div>
   );
 };

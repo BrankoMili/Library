@@ -1,10 +1,5 @@
-/* KIDS COLLECTION */
-.kids_container h2 {
-  text-align: center;
-}
-
 .products_list_container {
-  width: 70%;
+  width: 50%;
   /* background-color: red; */
   margin: 0 auto;
   display: grid;
@@ -12,14 +7,17 @@
 }
 
 .single_book_container {
-  /* background-color: yellow; */
-  /* margin: 0 auto; */
-  width: fit-content;
-}
-
-.single_book_container p {
-  width: fit-content;
-  /* background-color: blue; */
+  margin-top: 1rem;
+  margin-right: 20px;
+  max-width: 100%;
+  background: var(--clr-white);
+  border-radius: var(--radius);
+  box-shadow: var(--light-shadow);
+  padding: 0.5rem;
+  border: 1px solid rgb(230, 230, 230);
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 .single_book_container p:hover {
@@ -27,7 +25,9 @@
 }
 
 .single_book_photo {
-  width: 10rem;
+  max-width: 8rem;
+  height: 13rem;
+  max-width: 100%;
 }
 
 .single_book_photo:hover {

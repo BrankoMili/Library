@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+}
+
+.display_block {
+  display: block !important;
+}
+
+/* ADD BOOK PAGE */
+.addbook_container {
+  display: flex;
+  justify-content: center;
+  width: 90vw;
+  margin: 2rem auto 0 auto;
+  max-width: 37rem;
+  background: var(--clr-white);
+  border-radius: var(--radius);
+  box-shadow: var(--light-shadow);
+  padding: 0.5rem 0.5rem 2rem 0.5rem;
+  border: 1px solid rgb(230, 230, 230);
+}
+
+.addbook_container h3 {
+  margin-top: 2rem;
+}
+
+.input_field_container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.input_field_container input[type="text"],
+.input_field_container input[type="number"],
+.input_field_container input[type="file"] {
+  width: 14rem;
+  height: 21px;
+}
+
+.input_field_container input[type="file"] {
+  margin-left: 1rem;
+  margin-top: 5px;
+}
+
+.addbook_container input[type="submit"] {
+  margin: 1rem auto 0 auto;
+}
+
+.addbook_container .select-list {
+  background-color: var(--color-background-light);
+  margin-bottom: 1.1rem;
+  position: relative;
+}
+.addbook_container .select-list .title {
+  display: inline-block;
+  cursor: pointer;
+  background: var(--color-background-light);
+  border: 1px solid rgb(133, 133, 133);
+  border-radius: var(--radius);
+  padding: 3px 12px 3px 12px;
+  width: 14rem;
+  position: relative;
+}
+
+.addbook_container .select-list .title .selected_categories_list {
+  color: rgb(138, 138, 138);
+}
+
+.addbook_container .select-list .title .arrow_down_image {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  right: 10px;
+  top: 17px;
+}
+
+.addbook_container .select-list .title:hover {
+  background: var(--color-grey);
+}
+
+.addbook_container .select-options {
+  width: 17rem;
+  position: absolute;
+  border: 1px solid var(--color-grey);
+  background-color: var(--color-background-light);
+  z-index: 1;
+  top: 54px;
+  right: -48px;
+  display: none;
+  float: right;
+  overflow: auto;
+  height: 12rem;
+}
+
+.addbook_container .select-options::-webkit-scrollbar {
+  width: 15px;
+  border: 1px solid rgb(218, 218, 218);
+}
+
+.addbook_container .select-options::-webkit-scrollbar-thumb {
+  border: 1px solid rgb(185, 185, 185);
+  background-color: rgb(226, 226, 226);
+  border-radius: var(--radius);
+}
+
+.addbook_container .select-options .option label {
+  display: inline-block;
+  padding: 5px 15px 5px 10px;
+}
+
+.addbook_container .select-options .option:hover {
+  background: var(--color-grey);
+}

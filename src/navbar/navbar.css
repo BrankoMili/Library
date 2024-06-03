@@ -125,15 +125,12 @@ nav {
   transition: var(--transition);
 }
 
-.search_singin_container .signin_button {
-  color: white;
-}
-
 .search_singin_container a {
   color: white;
-  padding: 3px;
+  padding: 3px 3px 5px 3px;
   background-color: var(--second-color);
   margin-left: 15px;
+  border-radius: var(--radius);
 }
 
 .search_singin_container a:hover {

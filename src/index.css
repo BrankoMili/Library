@@ -6,6 +6,8 @@
   --radius: 0.25rem;
   --transition: all 0.1s linear;
   --light-shadow: 0 7px 8px rgba(0, 0, 0, 0.1);
+  --color-background-light: #fff;
+  --color-grey: #eaeaec;
 }
 
 body {
