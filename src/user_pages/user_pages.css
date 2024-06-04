@@ -8,6 +8,7 @@
 
 /* ADD BOOK PAGE */
 .addbook_container {
+  position: relative;
   display: flex;
   justify-content: center;
   width: 90vw;
