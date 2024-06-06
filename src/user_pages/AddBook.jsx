@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import instance from "../utils/api";
 import "./user_pages.css";
-import { ReactComponent as Arrow_down } from "../assets/arrow_down.svg";
+import { ReactComponent as ArrowDown } from "../assets/arrow_down.svg";
 import Error from "../error/Error";
-import { ReactComponent as Close_image } from "../assets/close.svg";
-import { ReactComponent as Error_image } from "../assets/error.svg";
+import { ReactComponent as CloseImage } from "../assets/close.svg";
+import { ReactComponent as ErrorImage } from "../assets/error.svg";
+import { NotificationContext } from "../context/Notification";
 
 const AddBook = () => {
   const [book, setBook] = useState({
@@ -21,11 +22,9 @@ const AddBook = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
-  const [notification, setNotification] = useState({
-    notification_title: "",
-    notification_text: "",
-    show: false
-  });
+
+  const { notification, setNotification, showNotification } =
+    useContext(NotificationContext);
   const [timer, setTimer] = useState(undefined);
 
   useEffect(() => {
@@ -70,11 +69,20 @@ const AddBook = () => {
       if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
         return true;
       } else {
-        // alert("Only jpg/jpeg and png files are allowed!");
+        showNotification(
+          "Invalid book cover image",
+          "Only jpg/jpeg and png files are allowed.",
+          timer
+        );
         return false;
       }
     } else {
-      // alert("Book cover image is not selected.");
+      showNotification(
+        "Invalid book cover image",
+        "Book cover image is not selected.",
+        timer
+      );
+
       return false;
     }
   };
@@ -89,70 +97,65 @@ const AddBook = () => {
       if (extFile === "pdf") {
         return true;
       } else {
-        // alert("Only pdf files are allowed!");
+        showNotification(
+          "Invalid book PDF file",
+          "Only PDF files are allowed.",
+          timer
+        );
         return false;
       }
     } else {
-      // alert("PDF file is not selected.");
+      showNotification(
+        "Invalid book PDF file",
+        "PDF file is not selected.",
+        timer
+      );
       return false;
     }
   };
 
   const validateTextInputs = () => {
-    const nameRegex = /^[A-Za-z0-9\s\-_,\.;:()]{2,50}$/;
-    const descriptionRegex = /^[A-Za-z0-9\s\-_,\.;:()]{2,200}$/;
-
-    let notification_title = "";
-    let notification_text = "";
-
-    const showNotification = () => {
-      if (timer === undefined) {
-        setNotification(prevState => {
-          return {
-            ...prevState,
-            notification_title: notification_title,
-            notification_text: notification_text,
-            show: true
-          };
-        });
-      }
-    };
+    const nameRegex = /^[A-Za-z0-9\s\-_,.;:()]{2,50}$/;
+    const descriptionRegex = /^[A-Za-z0-9\s\-_,.;:()]{2,200}$/;
 
     if (nameRegex.test(book.title) === false) {
-      notification_title = "Invalid book title";
-      showNotification();
+      showNotification("Invalid book title", "", timer);
       return false;
     }
 
     if (descriptionRegex.test(book.description) === false) {
-      notification_title = "Invalid description";
-      showNotification();
+      showNotification("Invalid description", "", timer);
       return false;
     }
 
     if (nameRegex.test(book.author) === false) {
-      notification_title = "Invalid book author name";
-      showNotification();
+      showNotification("Invalid book author name", "", timer);
       return false;
     }
 
     if (nameRegex.test(book.publisher) === false) {
-      notification_title = "Invalid book publisher";
-      showNotification();
+      showNotification("Invalid book publisher", "", timer);
       return false;
     }
 
     if (book.category.length === 0) {
-      notification_title = "Invalid categories";
-      notification_text = "Categories field is empty";
-      showNotification();
+      showNotification(
+        "Invalid categories",
+        "Categories field is empty",
+        timer
+      );
       return false;
     }
   };
 
   const handleSubmit = async event => {
+    clearTimeout(timer);
+    setTimer(undefined);
     event.preventDefault();
     if (validateTextInputs() && validateImageFile() && validatePDFFile()) {
+      setNotification(prevState => {
+        return { ...prevState, show: false };
+      });
       const formData = new FormData();
       formData.append("title", book.title);
       formData.append("description", book.description);
@@ -184,7 +187,7 @@ const AddBook = () => {
             return { ...prevState, show: false };
           });
           setTimer(undefined);
-        }, 3000)
+        }, 2000)
       );
     }
   };
@@ -197,12 +200,12 @@ const AddBook = () => {
         <h3 onClick={() => console.log(book)}>Insert new book</h3>
         {notification.show && (
           <div id="notification_container">
-            <Error_image id="error_icon" />
+            <ErrorImage id="error_icon" />
             <div className="text_notification_container">
               <b>{notification.notification_title}</b>
               <p>{notification.notification_text}</p>
             </div>
-            <Close_image
+            <CloseImage
               id="close_notification_icon"
               onClick={() => {
                 clearTimeout(timer);
@@ -229,15 +232,14 @@ const AddBook = () => {
           </div>
           <div className="input_field_container">
             <label htmlFor="book_desc">Description</label>
-            <input
-              type="text"
+            <textarea
               id="book_desc"
               onChange={e => {
                 setBook(prevState => {
                   return { ...prevState, description: e.target.value };
                 });
               }}
-            />
+            ></textarea>
           </div>
           <div className="input_field_container">
             <label htmlFor="book_author">Author</label>
@@ -260,7 +262,7 @@ const AddBook = () => {
                 setCategoriesWindow(!categoriesWindow);
               }}
             >
-              Select Categories <Arrow_down className="arrow_down_image" />
+              Select Categories <ArrowDown className="arrow_down_image" />
               <div className="selected_categories_list">
                 {book.category.length === 0
                   ? "Please select..."

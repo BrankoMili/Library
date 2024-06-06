@@ -39,6 +39,15 @@
   height: 21px;
 }
 
+.input_field_container textarea {
+  width: 14rem;
+  max-width: 14rem;
+  min-width: 14rem;
+  height: 80px;
+  max-height: 180px;
+  min-height: 80px;
+}
+
 .input_field_container input[type="file"] {
   margin-left: 1rem;
   margin-top: 5px;

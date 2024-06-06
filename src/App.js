@@ -13,29 +13,32 @@ import SingleProduct from "./products/SingleProduct";
 import PrivacyPolicy from "./views/PrivacyPolicy";
 import AddBook from "./user_pages/AddBook";
 import SigninPage from "./views/SigninPage";
+import NotificationContextProvider from "./context/Notification";
 
 function App() {
   return (
     <div className="App">
       <BooksContextProvider>
-        <Router>
-          <Navbar />
-          <div className="main">
-            <Routes>
-              <Route path="/contactus" element={<ContactUs />} />
-              <Route path="/termsofservice" element={<TermsOfService />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/kids" element={<Kids />} />
-              <Route path="/teens" element={<Teens />} />
-              <Route path="/addbook" element={<AddBook />} />
-              <Route path="/login" element={<SigninPage />} />
-              <Route path="/books/:productId" element={<SingleProduct />} />
-              <Route path="*" element={<PageNotFound />} />
-              <Route path="/" element={<Home />} />
-            </Routes>
-          </div>
-          <Footer />
-        </Router>
+        <NotificationContextProvider>
+          <Router>
+            <Navbar />
+            <div className="main">
+              <Routes>
+                <Route path="/contactus" element={<ContactUs />} />
+                <Route path="/termsofservice" element={<TermsOfService />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/kids" element={<Kids />} />
+                <Route path="/teens" element={<Teens />} />
+                <Route path="/addbook" element={<AddBook />} />
+                <Route path="/login" element={<SigninPage />} />
+                <Route path="/books/:productId" element={<SingleProduct />} />
+                <Route path="*" element={<PageNotFound />} />
+                <Route path="/" element={<Home />} />
+              </Routes>
+            </div>
+            <Footer />
+          </Router>
+        </NotificationContextProvider>
       </BooksContextProvider>
     </div>
   );
