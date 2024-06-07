@@ -19,31 +19,50 @@ const Kids = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Make query string and navigate to new link
-  const navigateToQueryString = () => {
-    const baseUrl = baseURL;
-    const url = new URL(baseUrl);
-    const params = new URLSearchParams();
-
-    if (filters.categories.length !== 0) {
-      filters.categories.forEach(category => {
-        params.append("categories", category);
+  const handleFilterChange = (locationSearch, filterParam, value) => {
+    // Set filters
+    if (filterParam === "categories") {
+      setFilters(prevState => {
+        return {
+          ...prevState,
+          [filterParam]: [...prevState.categories, value]
+        };
+      });
+    } else {
+      setFilters(prevState => {
+        return {
+          ...prevState,
+          [filterParam]: value
+        };
       });
     }
-    if (filters.author) {
-      params.append("author", filters.author);
+
+    // Query string
+    const baseUrl = baseURL;
+    const url = new URL(baseUrl);
+    const params = new URLSearchParams(locationSearch);
+
+    if (filterParam && value) {
+      if (filters.categories.length !== 0) {
+        filters.categories.forEach(category => {
+          params.append("categories", category);
+        });
+      }
+
+      if (filterParam !== "author" && filters.author) {
+        params.append("author", filters.author);
+      }
+
+      params.append(filterParam, value);
     }
 
     url.search = params.toString();
+    // Navigate to query string
     navigate(url.search);
-  };
 
-  useEffect(() => {
-    setBooksState(prevState => {
-      return { ...prevState, loading: true, error: null };
-    });
+    // API call
     instance
-      .get("/book" + location.search)
+      .get("/book" + url.search)
       .then(res => {
         setBooksState(prevState => {
           return {
@@ -60,6 +79,22 @@ const Kids = () => {
           return { ...prevState, loading: false, error: err };
         });
       });
+  };
+
+  // Remove Filter
+  const handleRemoveFilter = item => {
+    setFilters(prevState => {
+      const filteredArr = prevState.categories.filter(categoryItem => {
+        return categoryItem !== item;
+      });
+      return { ...prevState, categories: filteredArr };
+    });
+  };
+
+  useEffect(() => {
+    setBooksState(prevState => {
+      return { ...prevState, loading: true, error: null };
+    });
 
     instance
       .get("/book/categories")
@@ -69,12 +104,10 @@ const Kids = () => {
       .catch(err => {
         console.error("Error", err);
       });
-    navigateToQueryString();
-  }, [location.search, filters]);
 
-  // useEffect(() => {
-  //   navigateToQueryString();
-  // }, [location.search, filters]);
+    const params = new URLSearchParams(location.search);
+    handleFilterChange(params.toString());
+  }, []);
 
   if (loading) return <div className="loader"></div>;
   if (error) return <Error error={error} />;
@@ -89,14 +122,7 @@ const Kids = () => {
             <p
               key={index}
               onClick={() => {
-                setFilters(prevState => {
-                  const filteredArr = prevState.categories.filter(
-                    categoryItem => {
-                      return categoryItem !== item;
-                    }
-                  );
-                  return { ...prevState, categories: filteredArr };
-                });
+                handleRemoveFilter(item);
               }}
             >
               {item}
@@ -109,12 +135,7 @@ const Kids = () => {
         <b>Authors</b>
         <p
           onClick={() => {
-            setFilters(prevState => {
-              return {
-                ...prevState,
-                author: "Yuval Noah Harari"
-              };
-            });
+            handleFilterChange(undefined, "author", "Yuval Noah Harari");
           }}
         >
           Yuval Noah Harari
@@ -122,12 +143,7 @@ const Kids = () => {
 
         <p
           onClick={() => {
-            setFilters(prevState => {
-              return {
-                ...prevState,
-                author: "Walter Isaacson"
-              };
-            });
+            handleFilterChange(undefined, "author", "Walter Isaacson");
           }}
         >
           Walter Isaacson
@@ -140,13 +156,7 @@ const Kids = () => {
             <li
               key={index}
               onClick={() => {
-                setFilters(prevState => {
-                  return {
-                    ...prevState,
-                    categories: [...prevState.categories, category]
-                  };
-                });
-                // navigateToQueryString();
+                handleFilterChange(undefined, "categories", category);
               }}
             >
               {category}
