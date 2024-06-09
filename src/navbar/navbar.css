@@ -114,6 +114,13 @@ nav {
   height: 25px;
 }
 
+.searchbox_container .search_button {
+  padding: 0;
+  margin-left: 2px;
+  border: none;
+  background: none;
+}
+
 .searchbox_container .search_icon {
   width: 30px;
   height: 30px;

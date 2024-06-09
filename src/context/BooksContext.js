@@ -4,6 +4,7 @@ export const BooksContext = createContext();
 
 const initialState = {
   books: [],
+  authors: [],
   loading: true,
   error: null
 };

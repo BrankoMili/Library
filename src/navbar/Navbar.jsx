@@ -3,14 +3,18 @@ import NavbarItem from "./NavbarItem";
 import { ReactComponent as Logo } from "../assets/library_logo.svg";
 import { ReactComponent as Search_icon } from "../assets/search_icon.svg";
 import "./navbar.css";
-import { useState } from "react";
+import { useState, useContext, useRef } from "react";
+import { SearchContext } from "../context/SearchContext";
 
 const Navbar = () => {
   const [collectionsWindow, setCollectionWindow] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
+  const { setSearchValue } = useContext(SearchContext);
+  const inputRef = useRef(null);
 
-  const handleSearch = () => {
-    setSearchInput("");
+  // Handle search - set search value to the state
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSearchValue(inputRef.current.value);
   };
 
   return (
@@ -51,23 +55,17 @@ const Navbar = () => {
         </div>
 
         <div className="search_singin_container">
-          <div className="searchbox_container">
+          <form className="searchbox_container" onSubmit={handleSubmit}>
             <input
               type="search"
               className="search_box"
-              value={searchInput}
-              onChange={e => {
-                setSearchInput(e.target.value);
-              }}
-              placeholder="Book/Author name..."
+              ref={inputRef}
+              placeholder="Book title..."
             />
-            <Search_icon
-              className="search_icon"
-              onClick={() => {
-                handleSearch();
-              }}
-            />
-          </div>
+            <button type="submit" className="search_button">
+              <Search_icon className="search_icon" />
+            </button>
+          </form>
           <NavbarItem value="Sign In" path="/login" />
         </div>
       </div>

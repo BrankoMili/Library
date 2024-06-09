@@ -1,6 +1,7 @@
 import instance, { baseURL } from "../utils/api";
 import { useEffect, useContext, useState } from "react";
 import { BooksContext } from "../context/BooksContext";
+import { SearchContext } from "../context/SearchContext";
 import Error from "../error/Error";
 import ProductsList from "../products/ProductsList";
 import "../products/products.css";
@@ -9,7 +10,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Kids = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
-  const { books, loading, error } = booksState;
+  const { searchValue } = useContext(SearchContext);
+  const { books, authors, loading, error } = booksState;
   const [allCategories, setAllCategories] = useState([]);
   const [filters, setFilters] = useState({
     categories: [],
@@ -19,15 +21,12 @@ const Kids = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleFilterChange = (
-    filterParam = undefined,
-    value = undefined,
-    removedFilter = {
-      item: "",
-      filter: "",
-      removeItem: false
-    }
-  ) => {
+  // Make query string
+  const baseUrl = baseURL;
+  const url = new URL(baseUrl);
+  const params = new URLSearchParams(location.search);
+
+  const handleFilterChange = (filterParam = undefined, value = undefined) => {
     // Set filters
     // Check filter arguments
     if (filterParam && value) {
@@ -53,11 +52,6 @@ const Kids = () => {
       }
     }
 
-    // Query string
-    const baseUrl = baseURL;
-    const url = new URL(baseUrl);
-    const params = new URLSearchParams(location.search);
-
     if (filterParam && value) {
       // Check if filter already exists
       if (params.has(filterParam) === false) {
@@ -81,11 +75,6 @@ const Kids = () => {
       }
     }
 
-    // Remove item filter
-    if (removedFilter.removeItem) {
-      params.delete(removedFilter.filter, removedFilter.item);
-    }
-
     url.search = params.toString();
     // Navigate to query string
     navigate(url.search);
@@ -95,9 +84,17 @@ const Kids = () => {
       .get("/book" + url.search)
       .then(res => {
         setBooksState(prevState => {
+          const authorList = [];
+          res.data.content.forEach(book => {
+            if (authorList.includes(book.author) === false) {
+              authorList.push(book.author);
+            }
+          });
+
           return {
             ...prevState,
             books: res.data.content,
+            authors: authorList,
             loading: false,
             error: null
           };
@@ -111,8 +108,8 @@ const Kids = () => {
       });
   };
 
-  // Remove Filter
-  const handleRemoveFilter = (item, filter) => {
+  // Remove Filter/Parameter
+  const handleRemoveFilter = (item, filter, allFilters = false) => {
     // Remove item from state
     if (filter === "categories") {
       setFilters(prevState => {
@@ -129,12 +126,20 @@ const Kids = () => {
         };
       });
     }
+    if (item && filter) {
+      params.delete(filter, item); // REMOVE PARAMETER
+    }
 
-    handleFilterChange(undefined, undefined, {
-      item: item,
-      filter: filter,
-      removeItem: true
-    });
+    // DELETE ALL PARAMETERS
+    if (allFilters) {
+      for (let key of params.keys()) {
+        params.delete(key);
+        setFilters(prevState => {
+          return { ...prevState, categories: [], author: "" };
+        });
+      }
+    }
+    handleFilterChange();
   };
 
   useEffect(() => {
@@ -151,8 +156,13 @@ const Kids = () => {
         console.error("Error", err);
       });
 
+    // IF SEARCH VALUE EXISTS
+    if (searchValue) {
+      params.delete("title");
+      params.append("title", searchValue);
+    }
     handleFilterChange();
-  }, []);
+  }, [searchValue]);
 
   if (loading) return <div className="loader"></div>;
   if (error) return <Error error={error} />;
@@ -162,6 +172,13 @@ const Kids = () => {
       <h2>Kids Collection</h2>
       <div>
         <b>Used filters</b>
+        <p
+          onClick={() => {
+            handleRemoveFilter(undefined, undefined, true);
+          }}
+        >
+          Clear All
+        </p>
         {filters.categories.map((item, index) => {
           return (
             <p
@@ -192,21 +209,18 @@ const Kids = () => {
 
       <div>
         <b>Authors</b>
-        <p
-          onClick={() => {
-            handleFilterChange("author", "Yuval Noah Harari");
-          }}
-        >
-          Yuval Noah Harari
-        </p>
-
-        <p
-          onClick={() => {
-            handleFilterChange("author", "Walter Isaacson");
-          }}
-        >
-          Walter Isaacson
-        </p>
+        {authors.map((author, index) => {
+          return (
+            <p
+              onClick={() => {
+                handleFilterChange("author", author);
+              }}
+              key={index}
+            >
+              {author}
+            </p>
+          );
+        })}
       </div>
       <b>Categories</b>
       <ul>
@@ -223,6 +237,12 @@ const Kids = () => {
           );
         })}
       </ul>
+      {searchValue && (
+        <b>
+          Showing {books.length} results for "{searchValue}"
+        </b>
+      )}
+
       <ProductsList products={books} />
     </div>
   );
