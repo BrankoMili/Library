@@ -19,41 +19,71 @@ const Kids = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleFilterChange = (locationSearch, filterParam, value) => {
+  const handleFilterChange = (
+    filterParam = undefined,
+    value = undefined,
+    removedFilter = {
+      item: "",
+      filter: "",
+      removeItem: false
+    }
+  ) => {
     // Set filters
-    if (filterParam === "categories") {
-      setFilters(prevState => {
-        return {
-          ...prevState,
-          [filterParam]: [...prevState.categories, value]
-        };
-      });
-    } else {
-      setFilters(prevState => {
-        return {
-          ...prevState,
-          [filterParam]: value
-        };
-      });
+    // Check filter arguments
+    if (filterParam && value) {
+      if (filterParam === "categories") {
+        setFilters(prevState => {
+          if (prevState[filterParam].includes(value) === false) {
+            return {
+              ...prevState,
+              [filterParam]: [...prevState[filterParam], value]
+            };
+          }
+          return {
+            ...prevState
+          };
+        });
+      } else {
+        setFilters(prevState => {
+          return {
+            ...prevState,
+            [filterParam]: value
+          };
+        });
+      }
     }
 
     // Query string
     const baseUrl = baseURL;
     const url = new URL(baseUrl);
-    const params = new URLSearchParams(locationSearch);
+    const params = new URLSearchParams(location.search);
 
     if (filterParam && value) {
-      if (filters.categories.length !== 0) {
-        filters.categories.forEach(category => {
-          params.append("categories", category);
-        });
-      }
+      // Check if filter already exists
+      if (params.has(filterParam) === false) {
+        params.append(filterParam, value);
+      } else {
+        if (filterParam === "categories") {
+          // Check if category already exists
+          if (params.has(filterParam, value) === false) {
+            params.delete(filterParam);
 
-      if (filterParam !== "author" && filters.author) {
-        params.append("author", filters.author);
+            if (filters[filterParam].length !== 0) {
+              filters[filterParam].forEach(item => {
+                params.append(filterParam, item);
+              });
+            }
+            params.append(filterParam, value);
+          }
+        } else {
+          params.set(filterParam, value);
+        }
       }
+    }
 
-      params.append(filterParam, value);
+    // Remove item filter
+    if (removedFilter.removeItem) {
+      params.delete(removedFilter.filter, removedFilter.item);
     }
 
     url.search = params.toString();
@@ -82,12 +112,28 @@ const Kids = () => {
   };
 
   // Remove Filter
-  const handleRemoveFilter = item => {
-    setFilters(prevState => {
-      const filteredArr = prevState.categories.filter(categoryItem => {
-        return categoryItem !== item;
+  const handleRemoveFilter = (item, filter) => {
+    // Remove item from state
+    if (filter === "categories") {
+      setFilters(prevState => {
+        const filteredArr = prevState[filter].filter(listItem => {
+          return listItem !== item;
+        });
+        return { ...prevState, [filter]: filteredArr };
       });
-      return { ...prevState, categories: filteredArr };
+    } else {
+      setFilters(prevState => {
+        return {
+          ...prevState,
+          [filter]: ""
+        };
+      });
+    }
+
+    handleFilterChange(undefined, undefined, {
+      item: item,
+      filter: filter,
+      removeItem: true
     });
   };
 
@@ -105,8 +151,7 @@ const Kids = () => {
         console.error("Error", err);
       });
 
-    const params = new URLSearchParams(location.search);
-    handleFilterChange(params.toString());
+    handleFilterChange();
   }, []);
 
   if (loading) return <div className="loader"></div>;
@@ -116,18 +161,32 @@ const Kids = () => {
     <div className="kids_container">
       <h2>Kids Collection</h2>
       <div>
-        <b>Selected categories:</b>
+        <b>Used filters</b>
         {filters.categories.map((item, index) => {
           return (
             <p
               key={index}
               onClick={() => {
-                handleRemoveFilter(item);
+                handleRemoveFilter(item, "categories");
               }}
             >
               {item}
             </p>
           );
+        })}
+        {Object.keys(filters).map((key, index) => {
+          if (key !== "categories") {
+            return (
+              <p
+                key={index}
+                onClick={() => {
+                  handleRemoveFilter(filters[key], key);
+                }}
+              >
+                {filters[key]}
+              </p>
+            );
+          }
         })}
       </div>
 
@@ -135,7 +194,7 @@ const Kids = () => {
         <b>Authors</b>
         <p
           onClick={() => {
-            handleFilterChange(undefined, "author", "Yuval Noah Harari");
+            handleFilterChange("author", "Yuval Noah Harari");
           }}
         >
           Yuval Noah Harari
@@ -143,7 +202,7 @@ const Kids = () => {
 
         <p
           onClick={() => {
-            handleFilterChange(undefined, "author", "Walter Isaacson");
+            handleFilterChange("author", "Walter Isaacson");
           }}
         >
           Walter Isaacson
@@ -156,7 +215,7 @@ const Kids = () => {
             <li
               key={index}
               onClick={() => {
-                handleFilterChange(undefined, "categories", category);
+                handleFilterChange("categories", category);
               }}
             >
               {category}
