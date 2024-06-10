@@ -13,10 +13,6 @@ const Kids = () => {
   const { searchValue } = useContext(SearchContext);
   const { books, authors, loading, error } = booksState;
   const [allCategories, setAllCategories] = useState([]);
-  const [filters, setFilters] = useState({
-    categories: [],
-    author: ""
-  });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,31 +23,6 @@ const Kids = () => {
   const params = new URLSearchParams(location.search);
 
   const handleFilterChange = (filterParam = undefined, value = undefined) => {
-    // Set filters
-    // Check filter arguments
-    if (filterParam && value) {
-      if (filterParam === "categories") {
-        setFilters(prevState => {
-          if (prevState[filterParam].includes(value) === false) {
-            return {
-              ...prevState,
-              [filterParam]: [...prevState[filterParam], value]
-            };
-          }
-          return {
-            ...prevState
-          };
-        });
-      } else {
-        setFilters(prevState => {
-          return {
-            ...prevState,
-            [filterParam]: value
-          };
-        });
-      }
-    }
-
     if (filterParam && value) {
       // Check if filter already exists
       if (params.has(filterParam) === false) {
@@ -60,13 +31,6 @@ const Kids = () => {
         if (filterParam === "categories") {
           // Check if category already exists
           if (params.has(filterParam, value) === false) {
-            params.delete(filterParam);
-
-            if (filters[filterParam].length !== 0) {
-              filters[filterParam].forEach(item => {
-                params.append(filterParam, item);
-              });
-            }
             params.append(filterParam, value);
           }
         } else {
@@ -74,6 +38,8 @@ const Kids = () => {
         }
       }
     }
+
+    params.sort(); // Sort keys of search query
 
     url.search = params.toString();
     // Navigate to query string
@@ -110,22 +76,6 @@ const Kids = () => {
 
   // Remove Filter/Parameter
   const handleRemoveFilter = (item, filter, allFilters = false) => {
-    // Remove item from state
-    if (filter === "categories") {
-      setFilters(prevState => {
-        const filteredArr = prevState[filter].filter(listItem => {
-          return listItem !== item;
-        });
-        return { ...prevState, [filter]: filteredArr };
-      });
-    } else {
-      setFilters(prevState => {
-        return {
-          ...prevState,
-          [filter]: ""
-        };
-      });
-    }
     if (item && filter) {
       params.delete(filter, item); // REMOVE PARAMETER
     }
@@ -134,9 +84,6 @@ const Kids = () => {
     if (allFilters) {
       for (let key of params.keys()) {
         params.delete(key);
-        setFilters(prevState => {
-          return { ...prevState, categories: [], author: "" };
-        });
       }
     }
     handleFilterChange();
@@ -161,6 +108,7 @@ const Kids = () => {
       params.delete("title");
       params.append("title", searchValue);
     }
+
     handleFilterChange();
   }, [searchValue]);
 
@@ -170,41 +118,50 @@ const Kids = () => {
   return (
     <div className="kids_container">
       <h2>Kids Collection</h2>
+
+      <p>
+        Showing 15 of {books.length} results{" "}
+        {searchValue && (
+          <span>
+            for <b>"{searchValue}"</b>
+          </span>
+        )}
+      </p>
+
       <div>
-        <b>Used filters</b>
-        <p
-          onClick={() => {
-            handleRemoveFilter(undefined, undefined, true);
-          }}
-        >
-          Clear All
-        </p>
-        {filters.categories.map((item, index) => {
+        {(params.get("author") || params.getAll("categories").length !== 0) && (
+          <div>
+            <b>Used filters</b>
+            <p
+              onClick={() => {
+                handleRemoveFilter(undefined, undefined, true);
+              }}
+            >
+              Clear All
+            </p>
+          </div>
+        )}
+
+        {params.getAll("categories").map((item, index) => {
           return (
             <p
-              key={index}
               onClick={() => {
-                handleRemoveFilter(item, "categories");
+                handleRemoveFilter(item, "categories", false);
               }}
+              key={index}
             >
               {item}
             </p>
           );
         })}
-        {Object.keys(filters).map((key, index) => {
-          if (key !== "categories") {
-            return (
-              <p
-                key={index}
-                onClick={() => {
-                  handleRemoveFilter(filters[key], key);
-                }}
-              >
-                {filters[key]}
-              </p>
-            );
-          }
-        })}
+
+        <p
+          onClick={() => {
+            handleRemoveFilter(params.get("author"), "author", false);
+          }}
+        >
+          {params.get("author")}
+        </p>
       </div>
 
       <div>
