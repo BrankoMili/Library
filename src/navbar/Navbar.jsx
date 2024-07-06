@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import NavbarItem from "./NavbarItem";
 import { ReactComponent as Logo } from "../assets/library_logo.svg";
 import { ReactComponent as Search_icon } from "../assets/search_icon.svg";
@@ -10,11 +10,19 @@ const Navbar = () => {
   const [collectionsWindow, setCollectionWindow] = useState(false);
   const { setSearchValue } = useContext(SearchContext);
   const inputRef = useRef(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle search - set search value to the state
   const handleSubmit = e => {
     e.preventDefault();
-    setSearchValue(inputRef.current.value);
+
+    if (inputRef.current.value) {
+      if (location.pathname !== "/kids" || location.pathname !== "/teens") {
+        navigate("/kids");
+      }
+      setSearchValue(inputRef.current.value);
+    }
   };
 
   return (

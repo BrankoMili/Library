@@ -7,12 +7,19 @@ import ProductsList from "../products/ProductsList";
 import "../products/products.css";
 import "./collections.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ReactComponent as CloseButton } from "../assets/close.svg";
+import { ReactComponent as ArrowRight } from "../assets/arrow_right.svg";
+import { ReactComponent as ArrowDown } from "../assets/arrow_down.svg";
 
 const Kids = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
   const { searchValue } = useContext(SearchContext);
-  const { books, authors, loading, error } = booksState;
+  const { books, pageInfo, authors, loading, error } = booksState;
   const [allCategories, setAllCategories] = useState([]);
+  const [filterCategories, setFilterCategories] = useState({
+    authors: true,
+    categories: false
+  });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,6 +67,7 @@ const Kids = () => {
           return {
             ...prevState,
             books: res.data.content,
+            pageInfo: res.data.pageable,
             authors: authorList,
             loading: false,
             error: null
@@ -82,9 +90,10 @@ const Kids = () => {
 
     // DELETE ALL PARAMETERS
     if (allFilters) {
-      for (let key of params.keys()) {
+      params.forEach((value, key) => {
+        // console.log(key, value);
         params.delete(key);
-      }
+      });
     }
     handleFilterChange();
   };
@@ -116,91 +125,137 @@ const Kids = () => {
   if (error) return <Error error={error} />;
 
   return (
-    <div className="kids_container">
+    <div className="collection_container">
       <h2>Kids Collection</h2>
+      <main className="collection_page_container">
+        <div className="collection_filters">
+          <p>
+            Showing {pageInfo.pageSize} of {books.length} results{" "}
+            {searchValue && (
+              <span>
+                for <b>"{searchValue}"</b>
+              </span>
+            )}
+          </p>
 
-      <p>
-        Showing 15 of {books.length} results{" "}
-        {searchValue && (
-          <span>
-            for <b>"{searchValue}"</b>
-          </span>
-        )}
-      </p>
+          {(params.get("author") ||
+            params.getAll("categories").length !== 0) && (
+            <div className="used_filters_container">
+              <p
+                onClick={() => {
+                  handleRemoveFilter(undefined, undefined, true);
+                }}
+                className="clear_all_button"
+              >
+                Clear All
+              </p>
+              {params.getAll("categories").length !== 0 && (
+                <div>
+                  {params.getAll("categories").map((item, index) => {
+                    return (
+                      <p
+                        onClick={() => {
+                          handleRemoveFilter(item, "categories", false);
+                        }}
+                        key={index}
+                        className="used_filter_name"
+                      >
+                        <CloseButton className="close_button_img" />
+                        {item}
+                      </p>
+                    );
+                  })}
+                </div>
+              )}
 
-      <div>
-        {(params.get("author") || params.getAll("categories").length !== 0) && (
-          <div>
-            <b>Used filters</b>
-            <p
+              {params.get("author") && (
+                <p
+                  onClick={() => {
+                    handleRemoveFilter(params.get("author"), "author", false);
+                  }}
+                  className="used_filter_name"
+                >
+                  <CloseButton className="close_button_img" />
+                  {params.get("author")}
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="filter_category_container">
+            <div
+              className="filter_category_title"
               onClick={() => {
-                handleRemoveFilter(undefined, undefined, true);
+                setFilterCategories(prevState => {
+                  return { ...prevState, authors: !prevState.authors };
+                });
               }}
             >
-              Clear All
-            </p>
+              <b>Authors</b>
+              {filterCategories.authors ? (
+                <ArrowDown className="arrow_img" />
+              ) : (
+                <ArrowRight className="arrow_img" />
+              )}
+            </div>
+            <div className="underline_container"></div>
+            {filterCategories.authors && (
+              <div className="filter_list_container">
+                {authors.map((author, index) => {
+                  return (
+                    <p
+                      onClick={() => {
+                        handleFilterChange("author", author);
+                      }}
+                      key={index}
+                    >
+                      {author}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        )}
 
-        {params.getAll("categories").map((item, index) => {
-          return (
-            <p
+          <div className="filter_category_container">
+            <div
+              className="filter_category_title"
               onClick={() => {
-                handleRemoveFilter(item, "categories", false);
-              }}
-              key={index}
-            >
-              {item}
-            </p>
-          );
-        })}
-
-        <p
-          onClick={() => {
-            handleRemoveFilter(params.get("author"), "author", false);
-          }}
-        >
-          {params.get("author")}
-        </p>
-      </div>
-
-      <div>
-        <b>Authors</b>
-        {authors.map((author, index) => {
-          return (
-            <p
-              onClick={() => {
-                handleFilterChange("author", author);
-              }}
-              key={index}
-            >
-              {author}
-            </p>
-          );
-        })}
-      </div>
-      <b>Categories</b>
-      <ul>
-        {allCategories.map((category, index) => {
-          return (
-            <li
-              key={index}
-              onClick={() => {
-                handleFilterChange("categories", category);
+                setFilterCategories(prevState => {
+                  return { ...prevState, categories: !prevState.categories };
+                });
               }}
             >
-              {category}
-            </li>
-          );
-        })}
-      </ul>
-      {searchValue && (
-        <b>
-          Showing {books.length} results for "{searchValue}"
-        </b>
-      )}
+              <b>Categories</b>
+              {filterCategories.categories ? (
+                <ArrowDown className="arrow_img" />
+              ) : (
+                <ArrowRight className="arrow_img" />
+              )}
+            </div>
+            <div className="underline_container"></div>
 
-      <ProductsList products={books} />
+            {filterCategories.categories && (
+              <div className="filter_list_container">
+                {allCategories.map((category, index) => {
+                  return (
+                    <p
+                      key={index}
+                      onClick={() => {
+                        handleFilterChange("categories", category);
+                      }}
+                    >
+                      {category}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <ProductsList products={books} />
+      </main>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 .products_list_container {
-  width: 50%;
-  /* background-color: red; */
+  height: fit-content;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -9,7 +8,6 @@
 .single_book_container {
   margin-top: 1rem;
   margin-right: 20px;
-  max-width: 100%;
   background: var(--clr-white);
   border-radius: var(--radius);
   box-shadow: var(--light-shadow);
@@ -25,9 +23,8 @@
 }
 
 .single_book_photo {
-  max-width: 8rem;
-  height: 13rem;
-  max-width: 100%;
+  min-width: 10rem;
+  height: 15rem;
 }
 
 .single_book_photo:hover {
