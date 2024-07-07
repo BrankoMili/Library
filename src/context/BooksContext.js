@@ -6,6 +6,7 @@ const initialState = {
   books: [],
   pageInfo: {},
   authors: [],
+  categories: [],
   loading: true,
   error: null
 };

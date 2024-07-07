@@ -4,6 +4,7 @@
 
 .collection_container h2 {
   text-align: center;
+  margin-top: 1rem;
 }
 
 .collection_page_container {
@@ -14,9 +15,11 @@
 }
 
 .collection_page_container .collection_filters {
-  width: 22rem;
-  margin-right: 4rem;
-  background-color: rgb(233, 233, 233);
+  width: 23rem;
+  margin-right: 3rem;
+  background-color: #f2f5f7;
+  padding: 0.5rem;
+  border-radius: 10px;
 }
 
 .used_filters_container .used_filter_name {
@@ -64,9 +67,10 @@
 }
 
 .filter_category_container .underline_container {
+  margin-top: 4px;
   background-color: rgb(211, 211, 211);
   height: 1px;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
 .filter_category_container .filter_list_container {
@@ -76,4 +80,24 @@
 .filter_category_container .filter_list_container p {
   width: fit-content;
   cursor: pointer;
+}
+
+.filter_category_container .filter_list_container p:hover {
+  text-decoration: underline;
+}
+
+.sort_by_container {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sort_by_container select {
+  margin-top: 5px;
+  width: 10.2rem;
+  height: 1.4rem;
+}
+
+.sort_by_container label {
+  width: fit-content;
+  display: block;
 }

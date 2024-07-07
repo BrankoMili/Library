@@ -14,12 +14,15 @@ import { ReactComponent as ArrowDown } from "../assets/arrow_down.svg";
 const Kids = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
   const { searchValue } = useContext(SearchContext);
-  const { books, pageInfo, authors, loading, error } = booksState;
-  const [allCategories, setAllCategories] = useState([]);
+  const { books, pageInfo, authors, categories, loading, error } = booksState;
+  // const [allCategories, setAllCategories] = useState([]);
   const [filterCategories, setFilterCategories] = useState({
-    authors: true,
-    categories: false
+    authors: false,
+    categories: false,
+    collections: false,
+    language: false
   });
+  const [sortBy, setSortBy] = useState("title");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,10 +61,17 @@ const Kids = () => {
       .then(res => {
         setBooksState(prevState => {
           const authorList = [];
+          const categoriesList = [];
           res.data.content.forEach(book => {
             if (authorList.includes(book.author) === false) {
               authorList.push(book.author);
             }
+
+            book.categoryNames.forEach(category => {
+              if (categoriesList.includes(category) === false) {
+                categoriesList.push(category);
+              }
+            });
           });
 
           return {
@@ -69,6 +79,7 @@ const Kids = () => {
             books: res.data.content,
             pageInfo: res.data.pageable,
             authors: authorList,
+            categories: categoriesList,
             loading: false,
             error: null
           };
@@ -103,14 +114,14 @@ const Kids = () => {
       return { ...prevState, loading: true, error: null };
     });
 
-    instance
-      .get("/book/categories")
-      .then(res => {
-        setAllCategories(res.data);
-      })
-      .catch(err => {
-        console.error("Error", err);
-      });
+    // instance
+    //   .get("/book/categories")
+    //   .then(res => {
+    //     setAllCategories(res.data);
+    //   })
+    //   .catch(err => {
+    //     console.error("Error", err);
+    //   });
 
     // IF SEARCH VALUE EXISTS
     if (searchValue) {
@@ -130,7 +141,8 @@ const Kids = () => {
       <main className="collection_page_container">
         <div className="collection_filters">
           <p>
-            Showing {pageInfo.pageSize} of {books.length} results{" "}
+            Showing <span className="bold_text">{pageInfo.pageSize}</span> of{" "}
+            {books.length} results{" "}
             {searchValue && (
               <span>
                 for <b>"{searchValue}"</b>
@@ -182,6 +194,23 @@ const Kids = () => {
             </div>
           )}
 
+          <div className="sort_by_container">
+            <label htmlFor="sort_by">Sort by</label>
+            <select
+              id="sort_by"
+              onChange={e => {
+                setSortBy(e.target.value);
+              }}
+            >
+              <option value="title" defaultChecked>
+                Title
+              </option>
+              <option value="author">Author</option>
+              <option value="release_year_asc">Release Year Asc</option>
+              <option value="release_year_desc">Release Year Desc</option>
+            </select>
+          </div>
+
           <div className="filter_category_container">
             <div
               className="filter_category_title"
@@ -208,6 +237,11 @@ const Kids = () => {
                         handleFilterChange("author", author);
                       }}
                       key={index}
+                      className={
+                        params.getAll("author").includes(author)
+                          ? "bold_text"
+                          : ""
+                      }
                     >
                       {author}
                     </p>
@@ -237,13 +271,18 @@ const Kids = () => {
 
             {filterCategories.categories && (
               <div className="filter_list_container">
-                {allCategories.map((category, index) => {
+                {categories.map((category, index) => {
                   return (
                     <p
                       key={index}
                       onClick={() => {
                         handleFilterChange("categories", category);
                       }}
+                      className={
+                        params.getAll("categories").includes(category)
+                          ? "bold_text"
+                          : ""
+                      }
                     >
                       {category}
                     </p>
@@ -251,6 +290,44 @@ const Kids = () => {
                 })}
               </div>
             )}
+          </div>
+
+          <div className="filter_category_container">
+            <div
+              className="filter_category_title"
+              onClick={() => {
+                setFilterCategories(prevState => {
+                  return { ...prevState, collections: !prevState.collections };
+                });
+              }}
+            >
+              <b>Collections</b>
+              {filterCategories.collections ? (
+                <ArrowDown className="arrow_img" />
+              ) : (
+                <ArrowRight className="arrow_img" />
+              )}
+            </div>
+            <div className="underline_container"></div>
+          </div>
+
+          <div className="filter_category_container">
+            <div
+              className="filter_category_title"
+              onClick={() => {
+                setFilterCategories(prevState => {
+                  return { ...prevState, language: !prevState.language };
+                });
+              }}
+            >
+              <b>Language</b>
+              {filterCategories.language ? (
+                <ArrowDown className="arrow_img" />
+              ) : (
+                <ArrowRight className="arrow_img" />
+              )}
+            </div>
+            <div className="underline_container"></div>
           </div>
         </div>
 

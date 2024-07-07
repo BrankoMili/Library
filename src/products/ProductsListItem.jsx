@@ -5,20 +5,24 @@ const ProductsListItem = ({ product }) => {
   const navigate = useNavigate();
 
   return (
-    <div
-      onClick={() => {
-        navigate(`/books/${product.id}`);
-      }}
-      className="single_book_container"
-    >
+    <div className="single_book_container">
       <div className="single_book">
         <img
           src={`${baseURLAddress}${product.coverPageImageName}`}
           alt="book example"
           className="single_book_photo"
+          onClick={() => {
+            navigate(`/books/${product.id}`);
+          }}
         />
         <div>
-          <b>{product.title}</b>
+          <b
+            onClick={() => {
+              navigate(`/books/${product.id}`);
+            }}
+          >
+            {product.title}
+          </b>
           <p>{product.author}</p>
         </div>
       </div>

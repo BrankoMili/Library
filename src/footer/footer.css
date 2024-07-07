@@ -3,8 +3,8 @@
   background-color: var(--main-color);
   text-align: center;
   color: white;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .footer_container p {

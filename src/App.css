@@ -8,6 +8,10 @@
   flex-grow: 1;
 }
 
+.bold_text {
+  font-weight: 600;
+}
+
 .button_style {
   display: block;
   margin-top: 1rem;
@@ -28,6 +32,15 @@
 /* HOME PAGE */
 .home_container {
   text-align: center;
+}
+
+.home_container h1 {
+  margin-top: 1rem;
+}
+
+.home_container h5 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .laptop_photo {
@@ -52,7 +65,7 @@
 
 .contactus_container h2 {
   text-align: center;
-  margin-top: 0;
+  margin-bottom: 0.8rem;
 }
 
 .contactus_container form {

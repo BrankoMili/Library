@@ -22,6 +22,10 @@
   cursor: pointer;
 }
 
+.single_book_container b:hover {
+  cursor: pointer;
+}
+
 .single_book_photo {
   min-width: 10rem;
   height: 15rem;
@@ -29,4 +33,56 @@
 
 .single_book_photo:hover {
   cursor: pointer;
+}
+
+.single_product_container {
+  display: flex;
+  justify-content: center;
+}
+
+.single_product_container .title_image_section {
+  margin-right: 5rem;
+  width: 15rem;
+  margin-top: 1rem;
+}
+
+.single_product_container .title_image_section img {
+  margin-top: 1rem;
+  width: 15rem;
+}
+
+.single_product_container .title_image_section img:hover {
+  transition: var(--transition);
+  opacity: 0.9;
+}
+
+.single_product_container .title_image_section .rating_container {
+  display: flex;
+  align-items: center;
+}
+
+.single_product_container .title_image_section .rating_container span {
+  margin-left: 1rem;
+}
+
+.single_product_container .title_image_section .rating_container .star_rate {
+  font-size: 1.5rem;
+  color: rgb(255, 217, 0);
+}
+
+.single_product_container
+  .title_image_section
+  .rating_container
+  .star_rate:hover {
+  cursor: pointer;
+  transform: scale(1.15);
+  transition: var(--transition);
+}
+
+.single_product_container .book_details_section {
+  margin-top: 3.5rem;
+}
+
+.single_product_container .book_details_section .book_desc {
+  width: 18rem;
 }
