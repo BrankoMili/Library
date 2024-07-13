@@ -7,7 +7,7 @@ const ContactUs = () => {
         our digital library. Feel free to reach out if you have any questions,
         comments, or suggestions.
       </p>
-      <b>Here are some ways to get in touch:</b>
+      <p className="bold_text">Here are some ways to get in touch:</p>
       <div className="contact_details">
         <i className="uil uil-phone-times"></i>
         <span>+381655545656</span>

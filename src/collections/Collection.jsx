@@ -6,23 +6,23 @@ import Error from "../error/Error";
 import ProductsList from "../products/ProductsList";
 import "../products/products.css";
 import "./collections.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as CloseButton } from "../assets/close.svg";
 import { ReactComponent as ArrowRight } from "../assets/arrow_right.svg";
 import { ReactComponent as ArrowDown } from "../assets/arrow_down.svg";
+import fileNotFound from "../assets/file_not_found.jpg";
 
-const Kids = () => {
+const Collection = () => {
   const { booksState, setBooksState } = useContext(BooksContext);
-  const { searchValue } = useContext(SearchContext);
+  const { searchValue, setSearchValue } = useContext(SearchContext);
   const { books, pageInfo, authors, categories, loading, error } = booksState;
-  // const [allCategories, setAllCategories] = useState([]);
   const [filterCategories, setFilterCategories] = useState({
     authors: false,
     categories: false,
-    collections: false,
-    language: false
+    language: false,
+    date_added: false
   });
-  const [sortBy, setSortBy] = useState("title");
+  const { collectionName } = useParams();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -104,6 +104,7 @@ const Kids = () => {
       params.forEach((value, key) => {
         // console.log(key, value);
         params.delete(key);
+        setSearchValue("");
       });
     }
     handleFilterChange();
@@ -113,15 +114,6 @@ const Kids = () => {
     setBooksState(prevState => {
       return { ...prevState, loading: true, error: null };
     });
-
-    // instance
-    //   .get("/book/categories")
-    //   .then(res => {
-    //     setAllCategories(res.data);
-    //   })
-    //   .catch(err => {
-    //     console.error("Error", err);
-    //   });
 
     // IF SEARCH VALUE EXISTS
     if (searchValue) {
@@ -137,7 +129,11 @@ const Kids = () => {
 
   return (
     <div className="collection_container">
-      <h2>Kids Collection</h2>
+      <h2>
+        {collectionName.charAt(0).toUpperCase() + collectionName.slice(1)}{" "}
+        Collection
+      </h2>
+
       <main className="collection_page_container">
         <div className="collection_filters">
           <p>
@@ -151,7 +147,8 @@ const Kids = () => {
           </p>
 
           {(params.get("author") ||
-            params.getAll("categories").length !== 0) && (
+            params.getAll("categories").length !== 0 ||
+            params.get("title")) && (
             <div className="used_filters_container">
               <p
                 onClick={() => {
@@ -199,15 +196,15 @@ const Kids = () => {
             <select
               id="sort_by"
               onChange={e => {
-                setSortBy(e.target.value);
+                handleFilterChange("sort", e.target.value);
               }}
             >
-              <option value="title" defaultChecked>
+              <option value="title,asc" defaultChecked>
                 Title
               </option>
-              <option value="author">Author</option>
-              <option value="release_year_asc">Release Year Asc</option>
-              <option value="release_year_desc">Release Year Desc</option>
+              <option value="author,asc">Author</option>
+              <option value="releaseYear,asc">Release Year Asc</option>
+              <option value="releaseYear,desc">Release Year Desc</option>
             </select>
           </div>
 
@@ -297,25 +294,6 @@ const Kids = () => {
               className="filter_category_title"
               onClick={() => {
                 setFilterCategories(prevState => {
-                  return { ...prevState, collections: !prevState.collections };
-                });
-              }}
-            >
-              <b>Collections</b>
-              {filterCategories.collections ? (
-                <ArrowDown className="arrow_img" />
-              ) : (
-                <ArrowRight className="arrow_img" />
-              )}
-            </div>
-            <div className="underline_container"></div>
-          </div>
-
-          <div className="filter_category_container">
-            <div
-              className="filter_category_title"
-              onClick={() => {
-                setFilterCategories(prevState => {
                   return { ...prevState, language: !prevState.language };
                 });
               }}
@@ -328,13 +306,56 @@ const Kids = () => {
               )}
             </div>
             <div className="underline_container"></div>
+            {filterCategories.language && (
+              <div className="filter_list_container">
+                <p>English</p>
+                <p>Spanish</p>
+              </div>
+            )}
+          </div>
+
+          <div className="filter_category_container">
+            <div
+              className="filter_category_title"
+              onClick={() => {
+                setFilterCategories(prevState => {
+                  return { ...prevState, date_added: !prevState.date_added };
+                });
+              }}
+            >
+              <b>Date Added</b>
+              {filterCategories.date_added ? (
+                <ArrowDown className="arrow_img" />
+              ) : (
+                <ArrowRight className="arrow_img" />
+              )}
+            </div>
+            <div className="underline_container"></div>
+            {filterCategories.date_added && (
+              <div className="filter_list_container">
+                <p>Last Week</p>
+                <p>Last Month</p>
+                <p>Last Two Months</p>
+                <p>Last Six Months</p>
+              </div>
+            )}
           </div>
         </div>
 
-        <ProductsList products={books} />
+        {books.length !== 0 ? (
+          <ProductsList products={books} />
+        ) : (
+          <div className="file_not_found_container">
+            <p className="bold_text">No Results Found</p>
+            <img src={fileNotFound} className="file_not_found_image" />
+            <a href="https://www.vecteezy.com/free-vector/app">
+              App Vectors by Vecteezy
+            </a>
+          </div>
+        )}
       </main>
     </div>
   );
 };
 
-export default Kids;
+export default Collection;

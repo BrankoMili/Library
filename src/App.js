@@ -6,8 +6,7 @@ import ContactUs from "./views/ContactUs";
 import TermsOfService from "./views/TermsOfService";
 import Navbar from "./navbar/Navbar";
 import Footer from "./footer/Footer";
-import Kids from "./collections/Kids";
-import Teens from "./collections/Teens";
+import Collection from "./collections/Collection";
 import BooksContextProvider from "./context/BooksContext";
 import SingleProduct from "./products/SingleProduct";
 import PrivacyPolicy from "./views/PrivacyPolicy";
@@ -29,8 +28,10 @@ function App() {
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/termsofservice" element={<TermsOfService />} />
                   <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-                  <Route path="/kids" element={<Kids />} />
-                  <Route path="/teens" element={<Teens />} />
+                  <Route
+                    path="/collection/:collectionName"
+                    element={<Collection />}
+                  />
                   <Route path="/addbook" element={<AddBook />} />
                   <Route path="/login" element={<SigninPage />} />
                   <Route path="/books/:productId" element={<SingleProduct />} />

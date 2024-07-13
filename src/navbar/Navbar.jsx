@@ -16,10 +16,12 @@ const Navbar = () => {
   // Handle search - set search value to the state
   const handleSubmit = e => {
     e.preventDefault();
-
     if (inputRef.current.value) {
-      if (location.pathname !== "/kids" || location.pathname !== "/teens") {
-        navigate("/kids");
+      if (
+        location.pathname !== "/collection/kids" ||
+        location.pathname !== "/collection/teens"
+      ) {
+        navigate("/collection/kids");
       }
       setSearchValue(inputRef.current.value);
     }
@@ -51,13 +53,13 @@ const Navbar = () => {
               {collectionsWindow && (
                 <div className="collections_menu">
                   <p>Ebooks</p>
-                  <Link to={"/kids"}>Kids Collection</Link>
-                  <Link to={"/teens"}>Teens Collection</Link>
+                  <Link to={"/collection/kids"}>Kids Collection</Link>
+                  <Link to={"/collection/teens"}>Teens Collection</Link>
                 </div>
               )}
             </div>
-            <NavbarItem value="Kids" path="/kids" />
-            <NavbarItem value="Teens" path="/teens" />
+            <NavbarItem value="Kids" path="/collection/kids" />
+            <NavbarItem value="Teens" path="/collection/teens" />
             <NavbarItem value="Contact Us" path="/contactus" />
           </div>
         </div>

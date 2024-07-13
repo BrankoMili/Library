@@ -223,6 +223,30 @@
   cursor: pointer;
 }
 
+/* PAGE NOT FOUND PAGE */
+.pagenotfound_container {
+  text-align: center;
+}
+
+.pagenotfound_container h3 {
+  margin-top: 1rem;
+}
+
+.pagenotfound_container img {
+  width: 33rem;
+}
+
+.pagenotfound_container a {
+  display: block;
+  font-size: 10px;
+  margin-top: 2rem;
+  color: black;
+}
+
+.pagenotfound_container button {
+  margin: 0 auto;
+}
+
 /* NOTIFICATION */
 #notification_container {
   position: absolute;

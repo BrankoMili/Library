@@ -1,7 +1,4 @@
 /* COLLECTION PAGE */
-.collection_container {
-}
-
 .collection_container h2 {
   text-align: center;
   margin-top: 1rem;
@@ -12,6 +9,7 @@
   justify-content: space-between;
   width: 70%;
   margin: 0 auto;
+  position: relative;
 }
 
 .collection_page_container .collection_filters {
@@ -99,5 +97,26 @@
 
 .sort_by_container label {
   width: fit-content;
+  display: block;
+}
+
+.file_not_found_container {
+  margin-top: 1rem;
+  position: absolute;
+  left: 43%;
+}
+
+.file_not_found_container p {
+  margin-bottom: 10px;
+}
+
+.file_not_found_container .file_not_found_image {
+  width: 15rem;
+  height: 15rem;
+}
+
+.file_not_found_container a {
+  color: black;
+  font-size: 0.5rem;
   display: block;
 }
